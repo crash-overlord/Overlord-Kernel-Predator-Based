@@ -616,14 +616,6 @@ config TCP_CONG_DCTCP
 
 	For further details see:
 	  http://simula.stanford.edu/~alizade/Site/DCTCP_files/dctcp-final.pdf
-
-config TCP_CONG_CDG
-	tristate "CAIA Delay-Gradient (CDG)"
-	default n
-	---help---
-	CAIA Delay-Gradient (CDG) is a TCP congestion control that modifies
-	the TCP sender in order to:
-
 	  o Use the delay gradient as a congestion signal.
 	  o Back off with an average probability that is independent of the RTT.
 	  o Coexist with flows that use loss-based congestion control.
@@ -633,13 +625,6 @@ config TCP_CONG_CDG
 	  D.A. Hayes and G. Armitage. "Revisiting TCP congestion control using
 	  delay gradients." In Networking 2011. Preprint: http://goo.gl/No3vdg
 
-config TCP_CONG_SOCIOPATH
-        tristate "TCP Sociopath"
-        default n
-        ---help---
-        This is basically TCP Reno with no slow start and a much more
-        aggressive ssthresh recalculation (lowers it by 5% instead of 50%).
-        Use responsibly!
 
 config TCP_CONG_AGILESD
         tristate "Agile-SD Congestion control"
@@ -652,17 +637,6 @@ config TCP_CONG_AGILESD
         to packet losses, which in turn Agile-SD to achieve better throughput 
         over high-speed networks.
 
-config TCP_CONG_CHINA
-        tristate "TCP_China"
-        default n
-        ---help---
-        
-        TCP-Africa is a delay-sensitive congestion avoidance algorithm for TCP that
-	allows for scalable, aggressive behavior in large underutilized links, yet
-        falls back to the more conservative TCP-Reno algorithm once links become
-        well utilized and congestion is imminent.
-        TCP-China is a modification of TCP-Africa that keeps using fast mode all the
-        time, regardless of fairness.
 
 choice
 	prompt "Default TCP congestion control"
@@ -692,8 +666,6 @@ choice
     config DEFAULT_WESTWOOD
         bool "Westwood" if TCP_CONG_WESTWOOD=y
 
-	config DEFAULT_SOCIOPATH
-		bool "Sociopath" if TCP_CONG_SOCIOPATH=y
 
 	config DEFAULT_DCTCP
 		bool "DCTCP" if TCP_CONG_DCTCP=y
@@ -701,11 +673,8 @@ choice
         config DEFAULT_AGILESD
 		bool "AGILESD" if TCP_CONG_AGILESD=y
 
-	config DEFAULT_CDG
-		bool "CDG" if TCP_CONG_CDG=y
 
-	config DEFAULT_CHINA
-		bool "CHINA" if TCP_CONG_CDG=y
+
 
 	config DEFAULT_RENO
 		bool "Reno"
@@ -729,11 +698,8 @@ config DEFAULT_TCP_CONG
 	default "veno" if DEFAULT_VENO
 	default "reno" if DEFAULT_RENO
 	default "dctcp" if DEFAULT_DCTCP
-	default "cdg" if DEFAULT_CDG
 	default "bbr" if DEFAULT_BBR
-	default "sociopath" if DEFAULT_SOCIOPATH
 	default "agilesd" if DEFAULT_AGILESD
-        default "china" if DEFAULT_CHINA
 	default "cubic"
 
 config TCP_MD5SIG
